@@ -3,705 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fa + Ma</title>
+  <title>De Outras Vidas ❤️</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      background-color: #000;
+      background: linear-gradient(135deg, #1a0826, #3a0007, #0d001a);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       color: #fff;
-      display: flex;
-      justify-content: center;
       min-height: 100vh;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 470px;
-      border-left: 1px solid #262626;
-      border-right: 1px solid #262626;
-      padding-bottom: 60px;
-      min-height: 100vh;
-      background-color: #000;
-      position: relative;
-    }
-
-    /* Topbar & User Switcher */
-    header {
-      position: sticky;
-      top: 0;
-      background-color: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid #262626;
-      padding: 12px 16px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 700;
-      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .user-switcher {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #121212;
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 1px solid #363636;
-    }
-
-    .user-switcher select {
-      background: transparent;
-      color: #fff;
-      border: none;
-      font-weight: 600;
-      outline: none;
-      cursor: pointer;
-    }
-
-    /* Stories Section */
-    .stories-container {
-      display: flex;
-      gap: 16px;
-      padding: 14px;
-      border-bottom: 1px solid #262626;
-      overflow-x: auto;
-    }
-
-    .story-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.75rem;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    .story-ring {
-      padding: 2px;
-      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      border-radius: 50%;
-    }
-
-    .story-ring.seen {
-      background: #363636;
-    }
-
-    .story-avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      border: 2px solid #000;
-      object-fit: cover;
-    }
-
-    /* Feed Posts */
-    .post {
-      border-bottom: 1px solid #262626;
-      padding-bottom: 12px;
-    }
-
-    .post-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-    }
-
-    .post-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .post-username {
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-
-    .post-image {
-      width: 100%;
-      max-height: 500px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .post-actions {
-      display: flex;
-      gap: 16px;
-      padding: 10px 14px 4px;
-    }
-
-    .action-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      font-size: 1.3rem;
-    }
-
-    .action-btn.liked {
-      color: #ff3040;
-    }
-
-    .post-likes {
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 0 14px 4px;
-    }
-
-    .post-caption {
-      font-size: 0.85rem;
-      padding: 0 14px 6px;
-    }
-
-    .post-caption strong {
-      margin-right: 6px;
-    }
-
-    .comments-list {
-      padding: 0 14px;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .add-comment-box {
-      display: flex;
-      padding: 8px 14px 0;
-      gap: 8px;
-    }
-
-    .add-comment-box input {
-      flex: 1;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 0.8rem;
-      outline: none;
-    }
-
-    .add-comment-box button {
-      background: none;
-      border: none;
-      color: #0095f6;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    /* Bottom Navigation Bar */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      max-width: 470px;
-      background: #000;
-      border-top: 1px solid #262626;
-      display: flex;
-      justify-content: space-around;
-      padding: 12px 0;
-      z-index: 10;
-    }
-
-    .nav-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    /* Story Viewer Modal */
-    .story-viewer {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #1a1a1a;
-      z-index: 100;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-    }
-
-    .story-viewer.active {
-      display: flex;
-    }
-
-    .story-viewer-content {
-      width: 100%;
-      max-width: 420px;
-      height: 100%;
-      max-height: 750px;
-      position: relative;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .story-progress-bar {
-      height: 3px;
-      background: rgba(255,255,255,0.3);
-      width: 100%;
-      position: absolute;
-      top: 10px;
-      left: 0;
-      z-index: 110;
-    }
-
-    .story-progress-fill {
-      height: 100%;
-      background: #fff;
-      width: 0%;
-      transition: width 0.1s linear;
-    }
-
-    .story-viewer-header {
-      position: absolute;
-      top: 20px;
-      left: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 110;
-    }
-
-    .story-viewer-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .close-story {
-      position: absolute;
-      top: 20px;
-      right: 14px;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.8rem;
-      z-index: 110;
-      cursor: pointer;
-    }
-
-    /* Upload Modal */
-    .upload-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.85);
-      z-index: 90;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .upload-modal.active {
-      display: flex;
-    }
-
-    .upload-card {
-      background: #262626;
-      width: 90%;
-      max-width: 400px;
-      padding: 20px;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .upload-card h3 {
       text-align: center;
+      overflow-x: hidden;
     }
 
-    .upload-card input[type="text"] {
-      background: #121212;
-      border: 1px solid #363636;
-      color: #fff;
-      padding: 10px;
-      border-radius: 6px;
-      outline: none;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    .upload-card button {
-      padding: 10px;
+    .container {
+      width: 90%;
+      max-width: 500px;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    /* Tela Inicial */
+    #start-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn-play {
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: white;
       border: none;
-      border-radius: 6px;
-      font-weight: 600;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border-radius: 50px;
       cursor: pointer;
+      box-shadow: 0 10px 20px rgba(255, 65, 108, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .btn-submit {
-      background: #0095f6;
-      color: #fff;
+    .btn-play:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 25px rgba(255, 65, 108, 0.6);
     }
 
-    .btn-cancel {
-      background: #363636;
-      color: #fff;
+    /* Conteúdo Dinâmico */
+    #experience {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1s forwards;
+    }
+
+    .lyrics-box {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 20px 0;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .photo-card {
+      width: 250px;
+      height: 300px;
+      background: #fff;
+      padding: 12px 12px 40px 12px;
+      border-radius: 8px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+      transform: rotate(-3deg);
+      transition: all 0.8s ease;
+      display: none;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .letter-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: 20px;
+      display: none;
+      animation: fadeInUp 1s forwards;
+    }
+
+    /* Animações */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Corações Caindo */
+    .heart {
+      position: fixed;
+      top: -10px;
+      color: #ff4b2b;
+      font-size: 20px;
+      user-select: none;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(360deg);
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
-    <!-- Cabeçalho com Seletor de Conta -->
-    <header>
-      <h1 class="logo">Fa + Ma</h1>
-      <div class="user-switcher">
-        <span>👤</span>
-        <select id="userSelect" onchange="switchUser(this.value)">
-          <option value="fabricio">Fabricio</option>
-          <option value="maria">Maria</option>
-        </select>
+  <div class="container">
+    <!-- Tela Inicial -->
+    <div id="start-screen">
+      <h1>Tenho algo para te dizer... ✨</h1>
+      <p>Aumente o som antes de apertar o botão.</p>
+      <button class="btn-play" onclick="startExperience()">Aperte aqui ❤️</button>
+    </div>
+
+    <!-- Tela da Experiência -->
+    <div id="experience">
+      <div id="photo" class="photo-card">
+        <img id="photo-img" src="foto1.jpg" alt="Foto dela">
       </div>
-    </header>
 
-    <!-- Carrossel de Stories -->
-    <div class="stories-container" id="storiesContainer"></div>
+      <div id="lyric" class="lyrics-box">...</div>
 
-    <!-- Feed de Publicações -->
-    <main id="feedContainer"></main>
-
-    <!-- Navegação Inferior -->
-    <nav class="bottom-nav">
-      <button class="nav-btn" onclick="renderApp()">🏠</button>
-      <button class="nav-btn" onclick="openUploadModal('post')">➕ Post</button>
-      <button class="nav-btn" onclick="openUploadModal('story')">📸 Story</button>
-    </nav>
-  </div>
-
-  <!-- Modal para Visualização de Stories -->
-  <div class="story-viewer" id="storyViewer">
-    <div class="story-viewer-content">
-      <div class="story-progress-bar"><div class="story-progress-fill" id="storyProgress"></div></div>
-      <button class="close-story" onclick="closeStory()">×</button>
-      <div class="story-viewer-header">
-        <img class="post-avatar" id="storyViewerAvatar" src="" alt="Avatar">
-        <strong id="storyViewerUsername"></strong>
+      <div id="final-letter" class="letter-box">
+        <h3>Para a pessoa mais especial 🥰</h3>
+        <p style="margin-top: 10px; font-size: 0.95rem; line-height: 1.5;">
+          Não sei em quantas outras vidas a gente já se encontrou, mas tenho certeza de que em todas elas eu escolheria você de novo. Obrigado por existir!
+        </p>
       </div>
-      <img class="story-viewer-img" id="storyViewerImg" src="" alt="Story">
     </div>
   </div>
 
-  <!-- Modal para Criar Novo Post / Story -->
-  <div class="upload-modal" id="uploadModal">
-    <div class="upload-card">
-      <h3 id="uploadTitle">Nova Publicação</h3>
-      <input type="file" id="fileInput" accept="image/*">
-      <input type="text" id="captionInput" placeholder="Escreva uma legenda (opcional)...">
-      <button class="btn-submit" onclick="submitUpload()">Publicar</button>
-      <button class="btn-cancel" onclick="closeUploadModal()">Cancelar</button>
-    </div>
-  </div>
+  <audio id="audio" src="musica.mp3"></audio>
 
   <script>
-    // --- GERADOR DE IMAGENS NATIVAS (SEM INTERNET) ---
-    function createAvatarDataURL(name, bgGradient) {
-      const canvas = document.createElement('canvas');
-      canvas.width = 100;
-      canvas.height = 100;
-      const ctx = canvas.getContext('2d');
+    const audio = document.getElementById('audio');
+    const startScreen = document.getElementById('start-screen');
+    const experience = document.getElementById('experience');
+    const lyricBox = document.getElementById('lyric');
+    const photoCard = document.getElementById('photo');
+    const photoImg = document.getElementById('photo-img');
+    const finalLetter = document.getElementById('final-letter');
 
-      const grad = ctx.createLinearGradient(0, 0, 100, 100);
-      grad.addColorStop(0, bgGradient[0]);
-      grad.addColorStop(1, bgGradient[1]);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 100, 100);
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 40px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(name.charAt(0).toUpperCase(), 50, 52);
-
-      return canvas.toDataURL();
+    function startExperience() {
+      startScreen.style.display = 'none';
+      experience.style.display = 'flex';
+      audio.play();
+      createHearts();
     }
 
-    function createPostDataURL(text, bgGradient) {
-      const canvas = document.createElement('canvas');
-      canvas.width = 600;
-      canvas.height = 500;
-      const ctx = canvas.getContext('2d');
+    // Mapeamento dos Segundos
+    audio.ontimeupdate = function() {
+      const time = audio.currentTime;
 
-      const grad = ctx.createLinearGradient(0, 0, 600, 500);
-      grad.addColorStop(0, bgGradient[0]);
-      grad.addColorStop(1, bgGradient[1]);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 600, 500);
-
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.font = 'bold 32px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, 300, 250);
-
-      return canvas.toDataURL();
-    }
-
-    // --- BANCO DE DADOS EM MEMÓRIA ---
-    const users = {
-      fabricio: {
-        username: 'fabricio',
-        name: 'Fabricio',
-        avatar: createAvatarDataURL('Fabricio', ['#2193b0', '#6dd5ed'])
-      },
-      maria: {
-        username: 'maria',
-        name: 'Maria',
-        avatar: createAvatarDataURL('Maria', ['#ee9ca7', '#ffdde1'])
+      // 0s a 8s - Intro
+      if (time > 0 && time < 8) {
+        lyricBox.innerText = "Sinta essa música...";
+      }
+      // 8s a 23s - Verso 1 (Mostra foto 1)
+      else if (time >= 8 && time < 23) {
+        lyricBox.innerText = "Me diz quem não fica louco nesse seu jeito meigo...";
+        photoCard.style.display = 'block';
+        photoImg.src = 'foto1.jpg'; // Coloque a primeira foto dela aqui
+      }
+      // 24s a 37s - Verso 2
+      else if (time >= 24 && time < 37) {
+        lyricBox.innerText = "Minha princesinha mandona... 👑";
+      }
+      // 38s a 59s - Refrão 1
+      else if (time >= 38 && time < 59) {
+        lyricBox.innerText = "Eu acho que já te conhecia de outras vidas! ✨❤️";
+        photoCard.style.transform = 'rotate(3deg) scale(1.05)';
+      }
+      // 1m00s a 1m13s - Solo instrumental
+      else if (time >= 60 && time < 73) {
+        lyricBox.innerText = "E na outra vida eu também te queria...";
+      }
+      // 1m14s a 1m28s - Verso repetido (Troca pra foto 2)
+      else if (time >= 74 && time < 88) {
+        photoImg.src = 'foto2.jpg'; // Coloque a segunda foto dela aqui (ou mantenha a foto 1)
+        lyricBox.innerText = "Incrível como você me ganha em cada detalhe...";
+      }
+      // 1m29s a 1m52s - Refrão 2
+      else if (time >= 89 && time < 112) {
+        lyricBox.innerText = "Pra falar a verdade... Eu te escolheria em todas as vidas! 💖";
+      }
+      // 1m53s em diante - Final
+      else if (time >= 113) {
+        lyricBox.innerText = "";
+        photoCard.style.display = 'none';
+        finalLetter.style.display = 'block';
       }
     };
 
-    let currentUser = 'fabricio';
-    let uploadType = 'post';
-    let storyTimer = null;
+    // Efeito de Chuva de Corações
+    function createHearts() {
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerText = ['❤️', '✨', '💖', '🌸'][Math.floor(Math.random() * 4)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+        heart.style.opacity = Math.random();
+        document.body.appendChild(heart);
 
-    let storiesData = [
-      {
-        id: 1,
-        username: 'fabricio',
-        image: createPostDataURL('Story do Fabricio 🚀', ['#11998e', '#38ef7d']),
-        seen: false
-      },
-      {
-        id: 2,
-        username: 'maria',
-        image: createPostDataURL('Story da Maria ✨', ['#8E2DE2', '#4A00E0']),
-        seen: false
-      }
-    ];
-
-    let postsData = [
-      {
-        id: 101,
-        username: 'maria',
-        image: createPostDataURL('Momento especial 💕', ['#ff758c', '#ff7eb3']),
-        caption: 'Aproveitando o dia! Fa + Ma forever.',
-        likes: ['fabricio'],
-        comments: [{ username: 'fabricio', text: 'Linda foto!' }]
-      },
-      {
-        id: 102,
-        username: 'fabricio',
-        image: createPostDataURL('Novo projeto iniciante 💻', ['#141e30', '#243b55']),
-        caption: 'Criando nossa própria rede social do zero!',
-        likes: ['maria'],
-        comments: [{ username: 'maria', text: 'Orgulho de você! ❤️' }]
-      }
-    ];
-
-    // --- SISTEMA DE NAVEGAÇÃO E RENDERIZAÇÃO ---
-    function switchUser(newUser) {
-      currentUser = newUser;
-      renderApp();
+        setTimeout(() => {
+          heart.remove();
+        }, 5000);
+      }, 300);
     }
-
-    function renderApp() {
-      document.getElementById('userSelect').value = currentUser;
-      renderStories();
-      renderFeed();
-    }
-
-    function renderStories() {
-      const container = document.getElementById('storiesContainer');
-      container.innerHTML = '';
-
-      storiesData.forEach(story => {
-        const user = users[story.username];
-        const storyElem = document.createElement('div');
-        storyElem.className = 'story-item';
-        storyElem.onclick = () => openStory(story.id);
-
-        storyElem.innerHTML = `
-          <div class="story-ring ${story.seen ? 'seen' : ''}">
-            <img class="story-avatar" src="${user.avatar}" alt="${user.name}">
-          </div>
-          <span>${user.name}</span>
-        `;
-        container.appendChild(storyElem);
-      });
-    }
-
-    function renderFeed() {
-      const container = document.getElementById('feedContainer');
-      container.innerHTML = '';
-
-      postsData.forEach(post => {
-        const user = users[post.username];
-        const isLiked = post.likes.includes(currentUser);
-
-        const postElem = document.createElement('article');
-        postElem.className = 'post';
-
-        let commentsHtml = post.comments.map(c => `
-          <div><strong>${users[c.username] ? users[c.username].name : c.username}:</strong> ${c.text}</div>
-        `).join('');
-
-        postElem.innerHTML = `
-          <div class="post-header">
-            <img class="post-avatar" src="${user.avatar}">
-            <span class="post-username">${user.name}</span>
-          </div>
-          <img class="post-image" src="${post.image}">
-          <div class="post-actions">
-            <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${post.id})">
-              ${isLiked ? '❤️' : '🤍'}
-            </button>
-            <button class="action-btn">💬</button>
-          </div>
-          <div class="post-likes">${post.likes.length} curtidas</div>
-          <div class="post-caption">
-            <strong>${user.name}</strong>${post.caption}
-          </div>
-          <div class="comments-list">${commentsHtml}</div>
-          <div class="add-comment-box">
-            <input type="text" placeholder="Adicione um comentário..." id="input-comment-${post.id}">
-            <button onclick="addComment(${post.id})">Publicar</button>
-          </div>
-        `;
-        container.appendChild(postElem);
-      });
-    }
-
-    // --- INTERAÇÕES DO FEED ---
-    function toggleLike(postId) {
-      const post = postsData.find(p => p.id === postId);
-      if (post) {
-        const index = post.likes.indexOf(currentUser);
-        if (index > -1) {
-          post.likes.splice(index, 1);
-        } else {
-          post.likes.push(currentUser);
-        }
-        renderFeed();
-      }
-    }
-
-    function addComment(postId) {
-      const input = document.getElementById(`input-comment-${postId}`);
-      const text = input.value.trim();
-
-      if (text) {
-        const post = postsData.find(p => p.id === postId);
-        post.comments.push({ username: currentUser, text: text });
-        input.value = '';
-        renderFeed();
-      }
-    }
-
-    // --- SISTEMA DE STORIES ---
-    function openStory(storyId) {
-      const story = storiesData.find(s => s.id === storyId);
-      if (!story) return;
-
-      story.seen = true;
-      const user = users[story.username];
-
-      document.getElementById('storyViewerAvatar').src = user.avatar;
-      document.getElementById('storyViewerUsername').textContent = user.name;
-      document.getElementById('storyViewerImg').src = story.image;
-
-      const viewer = document.getElementById('storyViewer');
-      const progress = document.getElementById('storyProgress');
-
-      viewer.classList.add('active');
-      progress.style.width = '0%';
-
-      let currentWidth = 0;
-      clearInterval(storyTimer);
-      storyTimer = setInterval(() => {
-        currentWidth += 2;
-        progress.style.width = currentWidth + '%';
-        if (currentWidth >= 100) {
-          closeStory();
-        }
-      }, 100);
-    }
-
-    function closeStory() {
-      clearInterval(storyTimer);
-      document.getElementById('storyViewer').classList.remove('active');
-      renderStories();
-    }
-
-    // --- CRIAÇÃO E UPLOAD DE CONTEÚDO ---
-    function openUploadModal(type) {
-      uploadType = type;
-      document.getElementById('uploadTitle').textContent = type === 'post' ? 'Novo Post' : 'Novo Story';
-      document.getElementById('captionInput').style.display = type === 'post' ? 'block' : 'none';
-      document.getElementById('uploadModal').classList.add('active');
-    }
-
-    function closeUploadModal() {
-      document.getElementById('uploadModal').classList.remove('active');
-      document.getElementById('fileInput').value = '';
-      document.getElementById('captionInput').value = '';
-    }
-
-    function submitUpload() {
-      const fileInput = document.getElementById('fileInput');
-      const captionInput = document.getElementById('captionInput');
-
-      const handleImageReady = (imageDataUrl) => {
-        if (uploadType === 'post') {
-          postsData.unshift({
-            id: Date.now(),
-            username: currentUser,
-            image: imageDataUrl,
-            caption: captionInput.value.trim(),
-            likes: [],
-            comments: []
-          });
-        } else {
-          storiesData.unshift({
-            id: Date.now(),
-            username: currentUser,
-            image: imageDataUrl,
-            seen: false
-          });
-        }
-        closeUploadModal();
-        renderApp();
-      };
-
-      if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          handleImageReady(e.target.result);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        // Se o usuário não escolher arquivo, gera uma imagem estilizada automática
-        const defaultText = uploadType === 'post' ? `Post de ${users[currentUser].name}` : `Story de ${users[currentUser].name}`;
-        const gradient = currentUser === 'fabricio' ? ['#00c6ff', '#0072ff'] : ['#f857a6', '#ff5858'];
-        const autoImage = createPostDataURL(defaultText, gradient);
-        handleImageReady(autoImage);
-      }
-    }
-
-    // Inicialização do App
-    renderApp();
   </script>
 </body>
 </html>
