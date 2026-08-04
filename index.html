@@ -123,7 +123,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Corações Caindo */
+    /* Corações e Brilhos */
     .heart {
       position: fixed;
       top: -10px;
@@ -160,15 +160,16 @@
       <div id="lyric" class="lyrics-box">...</div>
 
       <div id="final-letter" class="letter-box">
-        <h3>Para a pessoa mais especial 🥰</h3>
+        <h3>Para a minha princesinha mandona 🥰</h3>
         <p style="margin-top: 10px; font-size: 0.95rem; line-height: 1.5;">
-          Não sei em quantas outras vidas a gente já se encontrou, mas tenho certeza de que em todas elas eu escolheria você de novo. Obrigado por existir!
+          Não sei em quantas outras vidas a gente já se encontrou, mas tenho certeza de que em todas elas eu escolheria você de novo. Obrigado por fazer parte da minha vida!
         </p>
       </div>
     </div>
   </div>
 
-  <audio id="audio" src="musica.mp3"></audio>
+  <!-- Áudio configurado com o nome mandona.mp3 -->
+  <audio id="audio" src="mandona.mp3"></audio>
 
   <script>
     const audio = document.getElementById('audio');
@@ -186,25 +187,25 @@
       createHearts();
     }
 
-    // Mapeamento dos Segundos
+    // Mapeamento exato da gravação mandona.mp3
     audio.ontimeupdate = function() {
       const time = audio.currentTime;
 
-      // 0s a 8s - Intro
+      // 0s a 8s - Introdução com violão e bateria
       if (time > 0 && time < 8) {
-        lyricBox.innerText = "Sinta essa música...";
+        lyricBox.innerText = "Sinta esse momento...";
       }
-      // 8s a 23s - Verso 1 (Mostra foto 1)
+      // 8s a 23s - Verso 1 (Foto 1 entra em cena)
       else if (time >= 8 && time < 23) {
         lyricBox.innerText = "Me diz quem não fica louco nesse seu jeito meigo...";
         photoCard.style.display = 'block';
-        photoImg.src = 'foto1.jpg'; // Coloque a primeira foto dela aqui
+        photoImg.src = 'foto1.jpg'; // Coloque o nome da 1ª foto dela aqui
       }
-      // 24s a 37s - Verso 2
+      // 24s a 37s - Verso 2 (Princesinha Mandona)
       else if (time >= 24 && time < 37) {
         lyricBox.innerText = "Minha princesinha mandona... 👑";
       }
-      // 38s a 59s - Refrão 1
+      // 38s a 59s - Refrão 1 (Outras Vidas)
       else if (time >= 38 && time < 59) {
         lyricBox.innerText = "Eu acho que já te conhecia de outras vidas! ✨❤️";
         photoCard.style.transform = 'rotate(3deg) scale(1.05)';
@@ -213,16 +214,16 @@
       else if (time >= 60 && time < 73) {
         lyricBox.innerText = "E na outra vida eu também te queria...";
       }
-      // 1m14s a 1m28s - Verso repetido (Troca pra foto 2)
+      // 1m14s a 1m28s - Verso 2 (Muda pra Foto 2 se você tiver)
       else if (time >= 74 && time < 88) {
-        photoImg.src = 'foto2.jpg'; // Coloque a segunda foto dela aqui (ou mantenha a foto 1)
+        photoImg.src = 'foto2.jpg'; // Coloque a 2ª foto dela ou mantenha foto1.jpg
         lyricBox.innerText = "Incrível como você me ganha em cada detalhe...";
       }
       // 1m29s a 1m52s - Refrão 2
       else if (time >= 89 && time < 112) {
         lyricBox.innerText = "Pra falar a verdade... Eu te escolheria em todas as vidas! 💖";
       }
-      // 1m53s em diante - Final
+      // 1m53s em diante - Final com carta
       else if (time >= 113) {
         lyricBox.innerText = "";
         photoCard.style.display = 'none';
@@ -230,12 +231,12 @@
       }
     };
 
-    // Efeito de Chuva de Corações
+    // Animação de corações
     function createHearts() {
       setInterval(() => {
         const heart = document.createElement('div');
         heart.classList.add('heart');
-        heart.innerText = ['❤️', '✨', '💖', '🌸'][Math.floor(Math.random() * 4)];
+        heart.innerText = ['❤️', '✨', '💖', '👑'][Math.floor(Math.random() * 4)];
         heart.style.left = Math.random() * 100 + 'vw';
         heart.style.animationDuration = Math.random() * 3 + 2 + 's';
         heart.style.opacity = Math.random();
