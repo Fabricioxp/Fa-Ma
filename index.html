@@ -3,39 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Outras Vidas ❤️</title>
+  <title>De Outras Vidas ✨</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Georgia', 'Times New Roman', serif;
     }
 
+    /* Tema Azul Noite de Van Gogh */
     body {
-      background: linear-gradient(135deg, #1a0826, #3a0007, #0d001a);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      color: #fff;
+      background: radial-gradient(circle at center, #112244 0%, #0b1d3a 50%, #050b14 100%);
+      color: #fce8b2;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       overflow-x: hidden;
-    }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .container {
-      width: 90%;
-      max-width: 500px;
-      padding: 20px;
-      z-index: 10;
+      position: relative;
     }
 
     /* Tela Inicial */
@@ -43,209 +31,294 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 25px;
+      z-index: 20;
     }
 
-    .btn-play {
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
-      color: white;
+    h1 {
+      font-size: 2.2rem;
+      color: #f4c430;
+      text-shadow: 0 0 15px rgba(244, 196, 48, 0.4);
+    }
+
+    p {
+      color: #d1d8e0;
+      font-size: 1.1rem;
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, #f4c430, #e67e22);
+      color: #0b1d3a;
+      font-weight: bold;
       border: none;
-      padding: 15px 30px;
+      padding: 16px 36px;
       font-size: 1.2rem;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 10px 20px rgba(255, 65, 108, 0.4);
-      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 20px rgba(244, 196, 48, 0.5);
+      transition: all 0.3s ease;
     }
 
-    .btn-play:hover {
+    .btn-main:hover {
       transform: scale(1.05);
-      box-shadow: 0 15px 25px rgba(255, 65, 108, 0.6);
+      box-shadow: 0 0 30px rgba(244, 196, 48, 0.8);
     }
 
-    /* Conteúdo Dinâmico */
+    /* Interface Principal */
     #experience {
       display: none;
       flex-direction: column;
       align-items: center;
-      animation: fadeIn 1s forwards;
+      width: 90%;
+      max-width: 550px;
+      z-index: 10;
     }
 
-    .lyrics-box {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 20px 0;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    /* Moldura da Foto Estilo Van Gogh */
+    .photo-frame {
+      width: 260px;
+      height: 330px;
+      background: #0d2342;
+      border: 3px solid #f4c430;
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 0 25px rgba(244, 196, 48, 0.3), inset 0 0 15px rgba(0,0,0,0.8);
+      margin-bottom: 25px;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .photo-card {
-      width: 250px;
-      height: 300px;
-      background: #fff;
-      padding: 12px 12px 40px 12px;
-      border-radius: 8px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-      transform: rotate(-3deg);
-      transition: all 0.8s ease;
-      display: none;
+    .photo-frame.visible {
+      opacity: 1;
+      transform: scale(1);
     }
 
-    .photo-card img {
+    .photo-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 4px;
+      border-radius: 8px;
     }
 
-    .letter-box {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      padding: 20px;
-      border-radius: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      margin-top: 20px;
+    /* Caixa da Letra */
+    .lyric-box {
+      font-size: 1.4rem;
+      font-style: italic;
+      line-height: 1.5;
+      min-height: 90px;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 15px;
+    }
+
+    /* Botão de Controle Fixo */
+    .controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
       display: none;
-      animation: fadeInUp 1s forwards;
     }
 
-    /* Animações */
+    .btn-control {
+      background: rgba(11, 29, 58, 0.8);
+      border: 1px solid #f4c430;
+      color: #f4c430;
+      padding: 10px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+    }
+
+    .btn-control:hover {
+      background: #f4c430;
+      color: #0b1d3a;
+    }
+
+    /* Carta Final */
+    .final-card {
+      background: rgba(13, 35, 66, 0.85);
+      border: 2px solid #f4c430;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+      display: none;
+      animation: fadeIn 1.5s forwards;
+    }
+
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Corações e Brilhos */
-    .heart {
+    /* Partículas de Estrelas Douradas */
+    .star {
       position: fixed;
-      top: -10px;
-      color: #ff4b2b;
-      font-size: 20px;
-      user-select: none;
+      background: #f4c430;
+      border-radius: 50%;
       pointer-events: none;
-      animation: fall linear infinite;
+      animation: pulse 2s infinite ease-in-out;
     }
 
-    @keyframes fall {
-      to {
-        transform: translateY(105vh) rotate(360deg);
-      }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Tela Inicial -->
-    <div id="start-screen">
-      <h1>Tenho algo para te dizer... ✨</h1>
-      <p>Aumente o som antes de apertar o botão.</p>
-      <button class="btn-play" onclick="startExperience()">Aperte aqui ❤️</button>
+  <!-- Controles Fixos -->
+  <div class="controls" id="controls">
+    <button class="btn-control" id="btn-pause" onclick="togglePlay()">⏸️ Pausar</button>
+  </div>
+
+  <!-- Tela Inicial -->
+  <div id="start-screen">
+    <h1>Uma Canção Para Você... 🌌</h1>
+    <p>Aumente o som e prepare o coração.</p>
+    <button class="btn-main" onclick="startExperience()">Iniciar Experiência ✨</button>
+  </div>
+
+  <!-- Experiência Principal -->
+  <div id="experience">
+    <div id="photo-frame" class="photo-frame">
+      <img id="photo-img" src="foto1.jpg" alt="Ela">
     </div>
 
-    <!-- Tela da Experiência -->
-    <div id="experience">
-      <div id="photo" class="photo-card">
-        <img id="photo-img" src="foto1.jpg" alt="Foto dela">
-      </div>
+    <div id="lyric-display" class="lyric-box">...</div>
 
-      <div id="lyric" class="lyrics-box">...</div>
-
-      <div id="final-letter" class="letter-box">
-        <h3>Para a minha princesinha mandona 🥰</h3>
-        <p style="margin-top: 10px; font-size: 0.95rem; line-height: 1.5;">
-          Não sei em quantas outras vidas a gente já se encontrou, mas tenho certeza de que em todas elas eu escolheria você de novo. Obrigado por fazer parte da minha vida!
-        </p>
-      </div>
+    <div id="final-card" class="final-card">
+      <h2 style="color: #f4c430; margin-bottom: 15px;">Para a minha princesinha mandona ❤️</h2>
+      <p style="font-size: 1.05rem; line-height: 1.6; color: #e2e8f0;">
+        Seja nessa vida ou em todas as outras que virão, eu sempre iria te procurar e me apaixonar de novo por esse seu jeito único. Obrigado por iluminar a minha vida como as estrelas no céu.
+      </p>
     </div>
   </div>
 
-  <!-- Áudio configurado com o nome mandona.mp3 -->
-  <audio id="audio" src="mandona.mp3"></audio>
+  <audio id="audio" src="mandona.mp3" preload="auto"></audio>
 
   <script>
     const audio = document.getElementById('audio');
     const startScreen = document.getElementById('start-screen');
     const experience = document.getElementById('experience');
-    const lyricBox = document.getElementById('lyric');
-    const photoCard = document.getElementById('photo');
+    const controls = document.getElementById('controls');
+    const btnPause = document.getElementById('btn-pause');
+    const lyricDisplay = document.getElementById('lyric-display');
+    const photoFrame = document.getElementById('photo-frame');
     const photoImg = document.getElementById('photo-img');
-    const finalLetter = document.getElementById('final-letter');
+    const finalCard = document.getElementById('final-card');
+
+    // Mapeamento COMPLETO da letra e fotos sincronizadas por segundo exacto da música
+    const timeline = [
+      { time: 0, lyric: "Sinta o ritmo da música...", photo: null },
+      { time: 8, lyric: "Me diz quem não fica louco...", photo: "foto1.jpg" },
+      { time: 13, lyric: "Nesse jeito meigo e bobo seu... 💙", photo: "foto1.jpg" },
+      { time: 19, lyric: "Um jeito bobo seu...", photo: "foto2.jpg" },
+      { time: 24, lyric: "Me diz quem não se apaixona...", photo: "foto3.jpg" },
+      { time: 29, lyric: "Na princesinha mandona, eu sei... 👑", photo: "foto3.jpg" },
+      { time: 34, lyric: "Mas só liguei pra te dizer...", photo: "foto4.jpg" },
+      { time: 38, lyric: "Pra falar a verdade, eu acho que já te conhecia de outras vidas!", photo: "foto5.jpg" },
+      { time: 48, lyric: "Pra falar a verdade, eu acho que na última vida eu também te queria! ✨", photo: "foto6.jpg" },
+      { time: 54, lyric: "Na outra vida eu também te queria... ❤️", photo: "foto7.jpg" },
+      { time: 60, lyric: "(Pra falar a verdade...)", photo: "foto8.jpg" },
+      { time: 64, lyric: "Eu acho que já te conhecia de outras vidas!", photo: "foto9.jpg" },
+      { time: 70, lyric: "Na última vida eu também te queria...", photo: "foto10.jpg" },
+      { time: 76, lyric: "Na outra vida eu também te queria! 🌌", photo: "foto11.jpg" },
+      { time: 82, lyric: "Na outra vida eu também te queria...", photo: "foto12.jpg" },
+      { time: 94, lyric: "Me diz quem não fica louco...", photo: "foto13.jpg" },
+      { time: 98, lyric: "Nesse jeito meigo e bobo seu... 💙", photo: "foto14.jpg" },
+      { time: 105, lyric: "Jeito bobo seu...", photo: "foto15.jpg" },
+      { time: 110, lyric: "Pra falar a verdade, eu acho que já te conhecia de outras vidas!", photo: "foto16.jpg" },
+      { time: 119, lyric: "Pra falar a verdade, eu acho que na última vida eu também te queria!", photo: "foto17.jpg" },
+      { time: 125, lyric: "Na outra vida eu também te queria...", photo: "foto18.jpg" },
+      { time: 131, lyric: "Pra falar a verdade...", photo: "foto19.jpg" },
+      { time: 135, lyric: "Eu acho que já te conhecia de outras vidas! ✨", photo: "foto20.jpg" },
+      { time: 141, lyric: "Na última vida eu também te queria!", photo: "foto21.jpg" },
+      { time: 147, lyric: "Na outra vida eu também te queria...", photo: "foto22.jpg" },
+      { time: 153, lyric: "Na outra vida eu também te queria! 💙", photo: "foto23.jpg" },
+      { time: 162, lyric: "Na outra vida eu também te queria... ✨", photo: "foto24.jpg" },
+      { time: 173, lyric: "Fim...", photo: null, end: true }
+    ];
+
+    let currentPhotoSrc = "";
 
     function startExperience() {
       startScreen.style.display = 'none';
       experience.style.display = 'flex';
+      controls.style.display = 'block';
+      generateStars();
       audio.play();
-      createHearts();
     }
 
-    // Mapeamento exato da gravação mandona.mp3
-    audio.ontimeupdate = function() {
-      const time = audio.currentTime;
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        btnPause.innerHTML = "⏸️ Pausar";
+      } else {
+        audio.pause();
+        btnPause.innerHTML = "▶️ Continuar";
+      }
+    }
 
-      // 0s a 8s - Introdução com violão e bateria
-      if (time > 0 && time < 8) {
-        lyricBox.innerText = "Sinta esse momento...";
+    // Atualização em Tempo Real (Evita bugs de sincronização ao pausar/despausar)
+    audio.ontimeupdate = function() {
+      const currentTime = audio.currentTime;
+
+      // Busca o evento correto da linha do tempo correspondente ao tempo atual
+      let activeEvent = null;
+      for (let i = 0; i < timeline.length; i++) {
+        if (currentTime >= timeline[i].time) {
+          activeEvent = timeline[i];
+        }
       }
-      // 8s a 23s - Verso 1 (Foto 1 entra em cena)
-      else if (time >= 8 && time < 23) {
-        lyricBox.innerText = "Me diz quem não fica louco nesse seu jeito meigo...";
-        photoCard.style.display = 'block';
-        photoImg.src = 'foto1.jpg'; // Coloque o nome da 1ª foto dela aqui
-      }
-      // 24s a 37s - Verso 2 (Princesinha Mandona)
-      else if (time >= 24 && time < 37) {
-        lyricBox.innerText = "Minha princesinha mandona... 👑";
-      }
-      // 38s a 59s - Refrão 1 (Outras Vidas)
-      else if (time >= 38 && time < 59) {
-        lyricBox.innerText = "Eu acho que já te conhecia de outras vidas! ✨❤️";
-        photoCard.style.transform = 'rotate(3deg) scale(1.05)';
-      }
-      // 1m00s a 1m13s - Solo instrumental
-      else if (time >= 60 && time < 73) {
-        lyricBox.innerText = "E na outra vida eu também te queria...";
-      }
-      // 1m14s a 1m28s - Verso 2 (Muda pra Foto 2 se você tiver)
-      else if (time >= 74 && time < 88) {
-        photoImg.src = 'foto2.jpg'; // Coloque a 2ª foto dela ou mantenha foto1.jpg
-        lyricBox.innerText = "Incrível como você me ganha em cada detalhe...";
-      }
-      // 1m29s a 1m52s - Refrão 2
-      else if (time >= 89 && time < 112) {
-        lyricBox.innerText = "Pra falar a verdade... Eu te escolheria em todas as vidas! 💖";
-      }
-      // 1m53s em diante - Final com carta
-      else if (time >= 113) {
-        lyricBox.innerText = "";
-        photoCard.style.display = 'none';
-        finalLetter.style.display = 'block';
+
+      if (activeEvent) {
+        // Atualiza a letra se mudou
+        if (lyricDisplay.innerText !== activeEvent.lyric) {
+          lyricDisplay.innerText = activeEvent.lyric;
+        }
+
+        // Se o evento final for atingido, mostra a carta
+        if (activeEvent.end) {
+          photoFrame.classList.remove('visible');
+          lyricDisplay.style.display = 'none';
+          finalCard.style.display = 'block';
+          return;
+        }
+
+        // Atualiza a foto se houver foto nova e evita recarregar a mesma foto
+        if (activeEvent.photo) {
+          if (currentPhotoSrc !== activeEvent.photo) {
+            currentPhotoSrc = activeEvent.photo;
+            photoImg.src = activeEvent.photo;
+            photoFrame.classList.add('visible');
+          }
+        } else {
+          photoFrame.classList.remove('visible');
+        }
       }
     };
 
-    // Animação de corações
-    function createHearts() {
-      setInterval(() => {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.innerText = ['❤️', '✨', '💖', '👑'][Math.floor(Math.random() * 4)];
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-        heart.style.opacity = Math.random();
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-          heart.remove();
-        }, 5000);
-      }, 300);
+    // Criação de estrelas cintilantes no fundo estilo Van Gogh
+    function generateStars() {
+      for (let i = 0; i < 60; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        const size = Math.random() * 4 + 2;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        document.body.appendChild(star);
+      }
     }
   </script>
 </body>
