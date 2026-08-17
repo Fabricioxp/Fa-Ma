@@ -409,16 +409,22 @@
 
     // Gerenciamento de Autenticação
     window.handleLogin = async function() {
-      const userField = document.getElementById('username').value.trim();
-      const passField = document.getElementById('password').value.trim();
+      const userRaw = document.getElementById('username').value.trim();
+      const passRaw = document.getElementById('password').value.trim();
       const errorMsg = document.getElementById('error-msg');
 
-      // Exemplo de validação simples (pode ser ajustada)
-      if (userField.toLowerCase() === "amor" && passField === "1234") {
+      const userLower = userRaw.toLowerCase();
+      
+      // Validação: Usuário "maria" ou "fabricio" (case-insensitive) e Senha "winchester" (case-sensitive)
+      const isValidUser = userLower === "maria" || userLower === "fabricio";
+      const isValidPassword = passRaw === "winchester";
+
+      if (isValidUser && isValidPassword) {
+        errorMsg.style.display = 'none';
         sessionStorage.setItem('authenticated', 'true');
-        sessionStorage.setItem('user', userField);
+        sessionStorage.setItem('user', userRaw);
         
-        await logAccess(userField);
+        await logAccess(userRaw);
         showApp();
       } else {
         errorMsg.style.display = 'block';
