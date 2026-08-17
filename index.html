@@ -2,482 +2,480 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Princesinha Mandona ✨ For You</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Nossa História Inesquecível ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* RESET & ESTÉTICA VAN GOGH */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Georgia', 'Times New Roman', serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      background: radial-gradient(circle at 50% 30%, #162c54 0%, #0b172a 65%, #040812 100%);
-      color: #fce8b2;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-      padding-bottom: 90px;
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #020617;
+      color: #f1f5f9;
     }
 
-    /* ESTRELAS CINTILANTES */
-    #stars-container {
-      position: fixed;
+    /* Fundo Animado Cósmico */
+    #canvas-bg {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
       z-index: 1;
+      pointer-events: none;
     }
 
-    .star {
+    .cosmic-overlay {
       position: absolute;
-      background-color: #f4c430;
-      border-radius: 50%;
-      animation: pulseStar var(--duration) infinite ease-in-out;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 30%, rgba(15, 23, 42, 0.7) 0%, rgba(10, 25, 47, 0.9) 70%, rgba(2, 6, 23, 0.98) 100%);
+      z-index: 2;
+      pointer-events: none;
     }
 
-    @keyframes pulseStar {
-      0%, 100% { opacity: 0.25; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.4); box-shadow: 0 0 10px #f4c430; }
-    }
-
-    /* PLAYER DE ÁUDIO FIXO */
-    .audio-player-bar {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(11, 23, 42, 0.92);
-      border: 2px solid #f4c430;
-      padding: 12px 24px;
-      border-radius: 40px;
-      box-shadow: 0 0 25px rgba(244, 196, 48, 0.4);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      backdrop-filter: blur(10px);
-    }
-
-    .player-btn {
-      background: linear-gradient(135deg, #f4c430, #e67e22);
-      border: none;
-      color: #0b172a;
-      font-weight: bold;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .player-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 15px #f4c430;
-    }
-
-    .player-info {
-      font-size: 0.95rem;
-      color: #fce8b2;
-    }
-
-    /* ESTRUTURA PRINCIPAL */
-    .main-wrapper {
+    /* Container Principal */
+    .app-container {
       position: relative;
       z-index: 10;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px) 16px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 50px;
+    /* Barras de Progresso no Topo */
+    .progress-bar-container {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      padding-top: 6px;
+      z-index: 30;
     }
 
-    header h1 {
-      font-size: 2.8rem;
-      color: #f4c430;
-      text-shadow: 0 0 20px rgba(244, 196, 48, 0.5);
-      margin-bottom: 15px;
+    .progress-step {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
     }
 
-    header p {
-      font-size: 1.2rem;
-      color: #b8c7de;
-      max-width: 650px;
-      margin: 0 auto;
-      line-height: 1.6;
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #1e40af);
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px #38bdf8;
     }
 
-    .section-title {
-      font-size: 1.8rem;
-      color: #f4c430;
-      text-align: center;
-      margin: 50px 0 30px 0;
+    .progress-step.active .progress-fill {
+      width: 100%;
+    }
+
+    /* Área dos Slides */
+    .slide-wrapper {
       position: relative;
-    }
-
-    .section-title::after {
-      content: '';
-      display: block;
-      width: 80px;
-      height: 2px;
-      background: #f4c430;
-      margin: 10px auto 0 auto;
-      box-shadow: 0 0 8px #f4c430;
-    }
-
-    /* CARDS DA MÚSICA */
-    .topics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-      margin-bottom: 40px;
-    }
-
-    .topic-card {
-      background: rgba(22, 44, 84, 0.75);
-      border: 1px solid rgba(244, 196, 48, 0.4);
-      border-radius: 18px;
-      padding: 25px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    .topic-card:hover {
-      transform: translateY(-8px);
-      border-color: #f4c430;
-      box-shadow: 0 12px 30px rgba(244, 196, 48, 0.4);
-    }
-
-    .topic-card .icon {
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-      display: block;
-    }
-
-    .topic-card h3 {
-      font-size: 1.3rem;
-      color: #f4c430;
-      margin-bottom: 10px;
-    }
-
-    .topic-card p {
-      font-size: 0.95rem;
-      color: #d1d8e0;
-      line-height: 1.5;
-    }
-
-    /* GERADOR DE CUPONS ROMÂNTICOS (NOVO!) */
-    .coupon-box {
-      background: rgba(11, 23, 42, 0.85);
-      border: 2px dashed #f4c430;
-      border-radius: 20px;
-      padding: 30px;
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .btn-action {
-      background: linear-gradient(135deg, #e67e22, #f4c430);
-      color: #0b172a;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: none;
-      padding: 14px 28px;
-      border-radius: 30px;
-      cursor: pointer;
-      margin-top: 15px;
-      box-shadow: 0 0 15px rgba(244, 196, 48, 0.3);
-      transition: 0.3s;
-    }
-
-    .btn-action:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(244, 196, 48, 0.6);
-    }
-
-    .display-text {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      font-style: italic;
-      color: #ffffff;
-      min-height: 60px;
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-shadow: 0 0 10px rgba(244, 196, 48, 0.2);
+      margin: 10px 0;
+      overflow: hidden;
     }
 
-    /* PERGAMINHO FINAL */
-    .parchment {
-      background: rgba(22, 44, 84, 0.9);
-      border: 2px solid #f4c430;
-      border-radius: 20px;
-      padding: 35px;
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.96) translateY(10px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Cards de Texto */
+    .card-content {
+      background: rgba(10, 25, 47, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 24px;
+      padding: 28px 22px;
+      width: 100%;
+      max-width: 380px;
+      max-height: 90%;
+      overflow-y: auto;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(15, 23, 42, 0.5);
       text-align: center;
-      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
-    .parchment p {
-      font-size: 1.15rem;
-      line-height: 1.8;
-      color: #fce8b2;
-      margin-bottom: 20px;
+    .text-body {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      font-weight: 300;
     }
 
-    /* MODAL POPUP */
-    .modal-overlay {
-      position: fixed;
+    /* SLIDE FINAL COM FOTO TOTALMENTE PREENCHIDA */
+    .slide-final-container {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      height: 100%;
+      max-height: 620px;
+      display: flex;
+      flex-direction: column;
+      border: 1.5px solid rgba(56, 189, 248, 0.3);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(30, 58, 138, 0.4);
+    }
+
+    .photo-frame {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(4, 8, 18, 0.85);
-      backdrop-filter: blur(8px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      padding: 20px;
+      overflow: hidden;
     }
 
-    .modal-box {
-      background: linear-gradient(145deg, #112344, #0b172a);
-      border: 2px solid #f4c430;
-      border-radius: 20px;
-      max-width: 500px;
+    .photo-frame img {
       width: 100%;
-      padding: 30px;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .photo-gradient-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 35%;
+      background: linear-gradient(to top, rgba(2, 6, 23, 0.95) 0%, rgba(2, 6, 23, 0.6) 60%, transparent 100%);
+    }
+
+    .final-text-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 12px 18px 20px 18px;
       text-align: center;
-      box-shadow: 0 0 35px rgba(244, 196, 48, 0.4);
-      animation: modalAnim 0.35s ease;
+      z-index: 5;
     }
 
-    @keyframes modalAnim {
-      from { opacity: 0; transform: scale(0.85); }
-      to { opacity: 1; transform: scale(1); }
+    .love-declaration {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f43f5e;
+      margin-top: 6px;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 18px rgba(244, 63, 94, 0.6);
     }
 
-    .modal-box h3 {
-      font-size: 1.7rem;
-      color: #f4c430;
-      margin-bottom: 15px;
+    /* Botões de Navegação Inferiores */
+    .nav-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      z-index: 30;
+      padding-bottom: 4px;
     }
 
-    .modal-box p {
-      font-size: 1.1rem;
-      color: #e2e8f0;
-      line-height: 1.6;
-      margin-bottom: 25px;
-    }
-
-    .close-btn {
-      background: #f4c430;
-      color: #0b172a;
-      font-weight: bold;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 20px;
+    .btn-nav {
+      flex: 1;
+      padding: 13px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 58, 138, 0.9) 100%);
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: 0.3s;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
     }
 
-    .close-btn:hover {
-      background: #e67e22;
-      color: #fff;
+    .btn-nav:active {
+      transform: scale(0.96);
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
     }
+
+    .btn-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      border-color: transparent;
+    }
+
+    .touch-area {
+      position: absolute;
+      top: 50px;
+      bottom: 70px;
+      width: 35%;
+      z-index: 25;
+    }
+    .touch-left { left: 0; }
+    .touch-right { right: 0; }
   </style>
 </head>
 <body>
 
-  <div id="stars-container"></div>
+  <!-- Fundo Animado Cósmico -->
+  <canvas id="canvas-bg"></canvas>
+  <div class="cosmic-overlay"></div>
 
-  <!-- PLAYER FLUTUANTE -->
-  <div class="audio-player-bar">
-    <button class="player-btn" id="playBtn" onclick="toggleAudio()">▶️ Play</button>
-    <div class="player-info">
-      <strong style="color:#f4c430">Princesinha Mandona</strong> 🎵
+  <div class="app-container">
+
+    <!-- Indicadores no Topo -->
+    <div class="progress-bar-container">
+      <div class="progress-step active" onclick="goToSlide(0)"><div class="progress-fill"></div></div>
+      <div class="progress-step" onclick="goToSlide(1)"><div class="progress-fill"></div></div>
+      <div class="progress-step" onclick="goToSlide(2)"><div class="progress-fill"></div></div>
+      <div class="progress-step" onclick="goToSlide(3)"><div class="progress-fill"></div></div>
+      <div class="progress-step" onclick="goToSlide(4)"><div class="progress-fill"></div></div>
+      <div class="progress-step" onclick="goToSlide(5)"><div class="progress-fill"></div></div>
     </div>
-  </div>
 
-  <audio id="audio" src="mandona.mp3" loop></audio>
+    <div class="touch-area touch-left" onclick="prevSlide()"></div>
+    <div class="touch-area touch-right" onclick="nextSlide()"></div>
 
-  <div class="main-wrapper">
+    <!-- Container dos Slides -->
+    <div class="slide-wrapper">
 
-    <header>
-      <h1>Nossa História de Outras Vidas ✨</h1>
-      <p>Criei este cantinho especial para você lembrar todo dia o quanto é importante para mim e o quanto o seu jeito me faz bem.</p>
-    </header>
-
-    <!-- TÓPICOS DA MÚSICA -->
-    <h2 class="section-title">Clique em cada momento...</h2>
-
-    <div class="topics-grid">
-      
-      <div class="topic-card" onclick="openModal('meigo', 'Seu Jeito Meigo e Bobo 🧸', 'Mesmo de longe, seu sorriso, suas mensagens e o seu carinho mudam completamente o meu dia. O seu jeito leve de ser é a coisa mais bonita que eu já vi.')">
-        <span class="icon">✨</span>
-        <h3>Seu Jeito Meigo</h3>
-        <p>O motivo pelo qual fico com um sorriso bobo nas nossas conversas.</p>
+      <!-- Slide 1 -->
+      <div class="slide active">
+        <div class="card-content">
+          <p class="text-body">
+            Finalmente o grande dia chegou e, sério, foi muito melhor do que eu esperava.<br><br>
+            Chegando ao local por nós marcado, logo de longe, ao te ver, já abri um sorriso. Desci da moto com uma vergonha boba e fui em direção ao seu abraço tímido. Encostar meu peito ao seu e colar nossos corações foi uma sensação de alívio tão boa! Após meses sobrecarregando nossas vontades, aquilo foi como se minhas energias tivessem sido repostas.
+          </p>
+        </div>
       </div>
 
-      <div class="topic-card" onclick="openModal('mandona', 'Princesinha Mandona 👑', 'Você tenta fingir que é brava e mandona, mas eu sei que tem o coração mais lindo do mundo! É a minha princesinha favorita e ninguém tira esse posto.')">
-        <span class="icon">👑</span>
-        <h3>Princesinha Mandona</h3>
-        <p>Uma verdade sobre o seu lado que eu mais amo!</p>
+      <!-- Slide 2 -->
+      <div class="slide">
+        <div class="card-content">
+          <p class="text-body">
+            Ao tocar seus lábios no nosso primeiro beijinho, sentir sua boca foi único para mim. Pude provar o que é um beijo com sabor de amor de verdade. Mesmo que meio tímido, foi surreal... eu amei!
+          </p>
+        </div>
       </div>
 
-      <div class="topic-card" onclick="openModal('liguei', 'Só Pra Te Dizer... 💌', 'Que você faz uma diferença enorme na minha vida. Cada conversa nossa deixa meu dia mais leve e cheio de certeza de que estamos construindo algo incrível.')">
-        <span class="icon">💬</span>
-        <h3>Só Pra Te Dizer...</h3>
-        <p>Um recado sincero direto do meu coração.</p>
+      <!-- Slide 3 -->
+      <div class="slide">
+        <div class="card-content">
+          <p class="text-body">
+            A caminho do morro, tive o cuidado de andar bem devagar, principalmente em ruas esburacadas e lombadas, pois não queria te causar nenhum desconforto.
+          </p>
+        </div>
       </div>
 
-      <div class="topic-card" onclick="openModal('vidas', 'Outras Vidas 🌌', 'Tenho certeza absoluta de que a nossa sintonia não é de hoje. A gente já se pertencia muito antes de se encontrar por aqui!')">
-        <span class="icon">🌙</span>
-        <h3>De Outras Vidas</h3>
-        <p>A conexão forte que a gente sente todos os dias.</p>
+      <!-- Slide 4 -->
+      <div class="slide">
+        <div class="card-content">
+          <p class="text-body">
+            Lá no morro, no nosso cantinho debaixo da tirolesa, tivemos nossos primeiros toques reais e menos envergonhados. Eu só queria ficar ali mesmo, sentindo o seu cheiro pelo qual me apaixonei, o calor do seu abraço maravilhoso e aqueles beijinhos incessantes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 5 -->
+      <div class="slide">
+        <div class="card-content">
+          <p class="text-body">
+            Foi tudo muito perfeito! Você é a mulher mais linda que eu já vi e a sua voz me encantou. Esse foi apenas o nosso começo; ainda vamos ter muitos momentos juntinhos.
+          </p>
+        </div>
+      </div>
+
+      <!-- SLIDE FINAL -->
+      <div class="slide">
+        <div class="slide-final-container">
+          <div class="photo-frame">
+            <img src="https://i.imgur.com/kNuQhYA.jpeg" alt="Nossa Foto Especial">
+            <div class="photo-gradient-overlay"></div>
+          </div>
+          <div class="final-text-content">
+            <p class="text-body" style="font-size: 0.9rem; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">
+              Estou ansioso para te ver novamente e provar de todo o seu carinho de novo.
+            </p>
+            <div class="love-declaration">EU TE AMO! ❤️</div>
+          </div>
+        </div>
       </div>
 
     </div>
 
-    <!-- RECURSO INTERATIVO 1: GERADOR DE OUTRAS VIDAS -->
-    <h2 class="section-title">Nossas Outras Vidas</h2>
-
-    <div class="coupon-box">
-      <p>Clique abaixo para descobrir como a gente se apaixonou em outro tempo!</p>
-      <button class="btn-action" onclick="generatePastLife()">Descobrir Outro Universo 🚀</button>
-      <div class="display-text" id="storyDisplay">Clique para revelar um momento...</div>
+    <div class="nav-controls">
+      <button class="btn-nav" id="btnPrev" onclick="prevSlide()">← Voltar</button>
+      <button class="btn-nav" id="btnNext" onclick="nextSlide()">Avançar →</button>
     </div>
 
-    <!-- RECURSO INTERATIVO 2: CUPONS DA PRINCESINHA (NOVO!) -->
-    <h2 class="section-title">Vale-Cupons da Princesinha 🎟️</h2>
-
-    <div class="coupon-box">
-      <p>Toda princesinha mandona tem direito a mimos especiais. Tire um cupom exclusivo!</p>
-      <button class="btn-action" onclick="generateCoupon()">Resgatar Mimo ✨</button>
-      <div class="display-text" id="couponDisplay">Qual presente do dia você vai tirar?</div>
-    </div>
-
-    <!-- PERGAMINHO FINAL -->
-    <h2 class="section-title">Para Você ❤️</h2>
-
-    <div class="parchment">
-      <p>
-        Obrigado por deixar tudo mais bonito, pelas risadas e por ser essa pessoa incrível. Cada passo que a gente dá me mostra que valeu a pena te esperar.
-      </p>
-      <p style="font-weight: bold; color: #f4c430; font-size: 1.25rem;">
-        Na outra vida ou nesta... eu escolheria você de novo! 💙
-      </p>
-    </div>
-
-  </div>
-
-  <!-- MODAL -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-box">
-      <h3 id="modalTitle">Título</h3>
-      <p id="modalText">Conteúdo...</p>
-      <button class="close-btn" onclick="closeModal()">Fechar ❤️</button>
-    </div>
   </div>
 
   <script>
-    /* CONTROLE DE ÁUDIO */
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playBtn');
+    // VERIFICAÇÃO DE LOGIN
+    // Verifica se existe a permissão salva no navegador
+    if (localStorage.getItem('userLogado') !== 'true') {
+      // Redireciona para o login caso não esteja logado
+      window.location.href = "https://fabricioxp.github.io/nosso-canto/";
+    }
 
-    function toggleAudio() {
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerHTML = "⏸️ Pausar";
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const steps = document.querySelectorAll('.progress-step');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    function updateSlides() {
+      slides.forEach((slide, index) => {
+        if (index === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      steps.forEach((step, index) => {
+        if (index <= currentSlide) {
+          step.classList.add('active');
+        } else {
+          step.classList.remove('active');
+        }
+      });
+
+      btnPrev.disabled = currentSlide === 0;
+      if (currentSlide === slides.length - 1) {
+        btnNext.innerHTML = 'Reiniciar 🔄';
       } else {
-        audio.pause();
-        playBtn.innerHTML = "▶️ Play";
+        btnNext.innerHTML = 'Avançar →';
       }
     }
 
-    /* MODAL */
-    function openModal(id, title, text) {
-      document.getElementById('modalTitle').innerText = title;
-      document.getElementById('modalText').innerText = text;
-      document.getElementById('modalOverlay').style.display = 'flex';
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+      } else {
+        currentSlide = 0;
+      }
+      updateSlides();
     }
 
-    function closeModal() {
-      document.getElementById('modalOverlay').style.display = 'none';
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
     }
 
-    /* OUTRAS VIDAS */
-    const stories = [
-      "Nos anos 1920: A gente trocava cartas secretas e dançava sob a luz da lua! 🎷✨",
-      "No Egito Antigo: Eu olhava as estrelas e dava o seu nome para a mais brilhante do céu! 🌌",
-      "No Século XIX: Eu escrevia poemas longos num pergaminho pensando só em você! 📜❤️",
-      "Nos Anos 80: A gente ouvia fitas cassete românticas juntinhos o dia todo! 🎧🎵",
-      "No Futuro (Ano 3000): Viajávamos pelo universo e tínhamos um planeta só nosso! 🚀⭐"
-    ];
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlides();
+    }
 
-    function generatePastLife() {
-      const display = document.getElementById('storyDisplay');
-      const randomStory = stories[Math.floor(Math.random() * stories.length)];
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      if (touchEndX < touchStartX - 40) {
+        nextSlide();
+      }
+      if (touchEndX > touchStartX + 40) {
+        prevSlide();
+      }
+    }
+
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const stars = [];
+    for (let i = 0; i < 80; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.8 + 0.5,
+        color: ['#1e40af', '#38bdf8', '#60a5fa', '#ffffff', '#93c5fd'][Math.floor(Math.random() * 5)],
+        alpha: Math.random(),
+        speed: Math.random() * 0.015 + 0.005
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      display.style.opacity = '0';
-      setTimeout(() => {
-        display.innerText = randomStory;
-        display.style.opacity = '1';
-        display.style.transition = 'opacity 0.4s ease';
-      }, 200);
-    }
-
-    /* CUPONS DA PRINCESINHA */
-    const coupons = [
-      "🎟️ Vale 100 elogios seguidos sem reclamação!",
-      "🎟️ Vale ser a dona da razão o dia inteirinho!",
-      "🎟️ Vale escolher qual vai ser a nossa próxima conversa longa!",
-      "🎟️ Vale um áudio cantando a sua música favorita (mesmo se eu cantar mal)!",
-      "🎟️ Vale mandar em mim hoje sem questionamentos! 👑"
-    ];
-
-    function generateCoupon() {
-      const display = document.getElementById('couponDisplay');
-      const randomCoupon = coupons[Math.floor(Math.random() * coupons.length)];
-      
-      display.style.opacity = '0';
-      setTimeout(() => {
-        display.innerText = randomCoupon;
-        display.style.opacity = '1';
-        display.style.transition = 'opacity 0.4s ease';
-      }, 200);
-    }
-
-    /* ESTRELAS ESTILO VAN GOGH */
-    function createStars() {
-      const container = document.getElementById('stars-container');
-      const starCount = 85;
-
-      for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
+      stars.forEach(star => {
+        star.alpha += star.speed;
+        if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
         
-        const size = Math.random() * 3.5 + 1.5;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = star.color;
+        ctx.globalAlpha = Math.abs(star.alpha);
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = star.color;
+        ctx.fill();
+      });
 
-        container.appendChild(star);
-      }
+      requestAnimationFrame(animate);
     }
+    animate();
 
-    window.onload = createStars;
+    updateSlides();
   </script>
 </body>
 </html>
