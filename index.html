@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Nossa História Inesquecível ✨</title>
+  <title>❤️🥰 ✨</title>
   
   <!-- Fontes Google -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -83,18 +83,11 @@
 
     .login-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: #38bdf8;
-      margin-bottom: 8px;
+      margin-bottom: 20px;
       text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
-    }
-
-    .login-subtitle {
-      font-size: 0.85rem;
-      color: #94a3b8;
-      margin-bottom: 24px;
-      font-weight: 300;
     }
 
     .input-group {
@@ -375,74 +368,6 @@
     .touch-left { left: 0; }
     .touch-right { right: 0; }
   </style>
-
-  <!-- Módulos Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyD-EXAMPLE_KEY_REPLACE_ME",
-      authDomain: "nosso-amor-app.firebaseapp.com",
-      projectId: "nosso-amor-app",
-      storageBucket: "nosso-amor-app.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef123456"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Registra o login no Firestore
-    async function logAccess(username) {
-      try {
-        await addDoc(collection(db, "access_history"), {
-          user: username,
-          timestamp: serverTimestamp(),
-          userAgent: navigator.userAgent
-        });
-      } catch (e) {
-        console.error("Erro ao registrar acesso no Firestore: ", e);
-      }
-    }
-
-    // Gerenciamento de Autenticação
-    window.handleLogin = async function() {
-      const userRaw = document.getElementById('username').value.trim();
-      const passRaw = document.getElementById('password').value.trim();
-      const errorMsg = document.getElementById('error-msg');
-
-      const userLower = userRaw.toLowerCase();
-      
-      // Validação: Usuário "maria" ou "fabricio" (case-insensitive) e Senha "winchester" (case-sensitive)
-      const isValidUser = userLower === "maria" || userLower === "fabricio";
-      const isValidPassword = passRaw === "winchester";
-
-      if (isValidUser && isValidPassword) {
-        errorMsg.style.display = 'none';
-        sessionStorage.setItem('authenticated', 'true');
-        sessionStorage.setItem('user', userRaw);
-        
-        await logAccess(userRaw);
-        showApp();
-      } else {
-        errorMsg.style.display = 'block';
-      }
-    };
-
-    function showApp() {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('app-container').classList.add('visible');
-    }
-
-    // Checa sessão existente ao carregar
-    window.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem('authenticated') === 'true') {
-        showApp();
-      }
-    });
-  </script>
 </head>
 <body>
 
@@ -453,8 +378,7 @@
   <!-- Tela de Login -->
   <div id="login-screen">
     <div class="login-card">
-      <h1 class="login-title">Nosso Cantinho ✨</h1>
-      <p class="login-subtitle">Digite suas credenciais para acessar nossa história</p>
+      <h1 class="login-title">Login</h1>
       
       <div class="input-group">
         <label for="username">Usuário</label>
@@ -561,8 +485,48 @@
 
   </div>
 
-  <!-- Lógica de Animação e Navegação -->
+  <!-- Lógica do Login e Aplicação -->
   <script>
+    function showApp() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-container').classList.add('visible');
+    }
+
+    function handleLogin() {
+      const userRaw = document.getElementById('username').value.trim();
+      const passRaw = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('error-msg');
+
+      const userLower = userRaw.toLowerCase();
+      
+      // Validação: Usuário "maria" ou "fabricio" (maiúsculo/minúsculo) e Senha "winchester" (minúsculo)
+      const isValidUser = userLower === "maria" || userLower === "fabricio";
+      const isValidPassword = passRaw === "winchester";
+
+      if (isValidUser && isValidPassword) {
+        errorMsg.style.display = 'none';
+        sessionStorage.setItem('authenticated', 'true');
+        showApp();
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    // Suporte para entrar pressionando a tecla "Enter" no campo de senha
+    document.getElementById('password').addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        handleLogin();
+      }
+    });
+
+    // Mantém o acesso caso a página seja recarregada
+    window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('authenticated') === 'true') {
+        showApp();
+      }
+    });
+
+    // Lógica dos Slides
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const steps = document.querySelectorAll('.progress-step');
@@ -615,7 +579,7 @@
       updateSlides();
     }
 
-    // Suporte a Gestos Swiping
+    // Gestos em telas sensíveis ao toque (Swiping)
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -637,7 +601,7 @@
       }
     }
 
-    // Fundo Estrelado (Canvas)
+    // Fundo Estrelado Animado
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
 
