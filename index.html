@@ -11,7 +11,6 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      /* Dificulta a seleção e o toque longo no mobile */
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -28,7 +27,6 @@
       color: #f1f5f9;
     }
 
-    /* CAMADA PROTECTORA GLOBAL PARA DIFICULTAR PRINTS E CAPTURAS */
     .print-protector {
       position: fixed;
       top: 0;
@@ -36,11 +34,34 @@
       width: 100vw;
       height: 100vh;
       z-index: 99999;
-      background: rgba(0, 0, 0, 0.001); /* Transparente porém intercepta a captura direta */
-      pointer-events: none; /* Permite interagir com o site normalmente */
+      background: rgba(0, 0, 0, 0.001);
+      pointer-events: none;
     }
 
-    /* Fundo Animado Cósmico */
+    .video-background {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.25;
+      overflow: hidden;
+    }
+
+    .video-background iframe {
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100vh;
+      min-width: 177.77vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
     #canvas-bg {
       position: absolute;
       top: 0;
@@ -57,12 +78,73 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 50% 30%, rgba(15, 23, 42, 0.7) 0%, rgba(10, 25, 47, 0.9) 70%, rgba(2, 6, 23, 0.98) 100%);
+      background: radial-gradient(circle at 50% 30%, rgba(15, 23, 42, 0.6) 0%, rgba(10, 25, 47, 0.8) 70%, rgba(2, 6, 23, 0.95) 100%);
       z-index: 2;
       pointer-events: none;
     }
 
-    /* Container Principal */
+    .intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .intro-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .btn-start {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid rgba(56, 189, 248, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      color: #ffffff;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(244, 63, 94, 0.4);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-start:active {
+      transform: scale(0.9);
+    }
+
+    .audio-control-btn {
+      position: absolute;
+      top: env(safe-area-inset-top, 16px);
+      right: 16px;
+      z-index: 50;
+      background: rgba(10, 25, 47, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
     .app-container {
       position: relative;
       z-index: 10;
@@ -74,11 +156,10 @@
       padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px) 16px;
     }
 
-    /* Barras de Progresso no Topo */
     .progress-bar-container {
       display: flex;
       gap: 6px;
-      width: 100%;
+      width: calc(100% - 110px);
       padding-top: 6px;
       z-index: 30;
     }
@@ -104,7 +185,6 @@
       width: 100%;
     }
 
-    /* Área dos Slides */
     .slide-wrapper {
       position: relative;
       flex: 1;
@@ -136,7 +216,6 @@
       transform: scale(1) translateY(0);
     }
 
-    /* Cards de Texto */
     .card-content {
       background: rgba(10, 25, 47, 0.85);
       backdrop-filter: blur(16px);
@@ -163,7 +242,6 @@
       font-weight: 300;
     }
 
-    /* SLIDE FINAL COM FOTO VIA BACKGROUND-IMAGE E OVERLAY PROTEGIDO */
     .slide-final-container {
       position: relative;
       width: 100%;
@@ -190,7 +268,6 @@
       background-repeat: no-repeat;
     }
 
-    /* Camada transparente por cima da foto para bloquear clique direto */
     .photo-protect-overlay {
       position: absolute;
       top: 0;
@@ -231,7 +308,6 @@
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 18px rgba(244, 63, 94, 0.6);
     }
 
-    /* Botões de Navegação Inferiores */
     .nav-controls {
       display: flex;
       justify-content: space-between;
@@ -284,16 +360,25 @@
 </head>
 <body oncontextmenu="return false;">
 
-  <!-- CAMADA ANTI-PRINT / CAPTURA -->
   <div class="print-protector"></div>
 
-  <!-- Fundo Animado Cósmico -->
+  <div class="video-background">
+    <div id="player"></div>
+  </div>
+
   <canvas id="canvas-bg"></canvas>
   <div class="cosmic-overlay"></div>
 
+  <div class="intro-screen" id="introScreen">
+    <button class="btn-start" onclick="startExperience()">💖</button>
+  </div>
+
   <div class="app-container">
 
-    <!-- Indicadores no Topo -->
+    <button class="audio-control-btn" id="audioBtn" onclick="toggleAudio()">
+      <span id="audioIcon">⏸</span> <span id="audioText">Pausar</span>
+    </button>
+
     <div class="progress-bar-container">
       <div class="progress-step active" onclick="goToSlide(0)"><div class="progress-fill"></div></div>
       <div class="progress-step" onclick="goToSlide(1)"><div class="progress-fill"></div></div>
@@ -306,10 +391,7 @@
     <div class="touch-area touch-left" onclick="prevSlide()"></div>
     <div class="touch-area touch-right" onclick="nextSlide()"></div>
 
-    <!-- Container dos Slides -->
     <div class="slide-wrapper">
-
-      <!-- Slide 1 -->
       <div class="slide active">
         <div class="card-content">
           <p class="text-body">
@@ -319,7 +401,6 @@
         </div>
       </div>
 
-      <!-- Slide 2 -->
       <div class="slide">
         <div class="card-content">
           <p class="text-body">
@@ -328,7 +409,6 @@
         </div>
       </div>
 
-      <!-- Slide 3 -->
       <div class="slide">
         <div class="card-content">
           <p class="text-body">
@@ -337,7 +417,6 @@
         </div>
       </div>
 
-      <!-- Slide 4 -->
       <div class="slide">
         <div class="card-content">
           <p class="text-body">
@@ -346,7 +425,6 @@
         </div>
       </div>
 
-      <!-- Slide 5 -->
       <div class="slide">
         <div class="card-content">
           <p class="text-body">
@@ -355,7 +433,6 @@
         </div>
       </div>
 
-      <!-- SLIDE FINAL PROTEGIDO -->
       <div class="slide">
         <div class="slide-final-container">
           <div class="photo-frame">
@@ -370,7 +447,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="nav-controls">
@@ -380,30 +456,56 @@
 
   </div>
 
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <script>
-    /* Bloqueio de cliques de botão direito e arrastar */
+    let player;
+    let isPlaying = false;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        videoId: 'dWpGsK8Md28',
+        playerVars: { 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0, 'loop': 1, 'playlist': 'dWpGsK8Md28', 'modestbranding': 1, 'playsinline': 1, 'disablekb': 1 },
+        events: { 'onReady': onPlayerReady }
+      });
+    }
+
+    function onPlayerReady(event) {}
+
+    function startExperience() {
+      document.getElementById('introScreen').classList.add('hidden');
+      if (player && player.playVideo) {
+        player.unMute();
+        player.setVolume(100);
+        player.playVideo();
+        isPlaying = true;
+        updateAudioBtn();
+      }
+    }
+
+    function toggleAudio() {
+      if (!player) return;
+      if (isPlaying) {
+        player.pauseVideo();
+        isPlaying = false;
+      } else {
+        player.playVideo();
+        isPlaying = true;
+      }
+      updateAudioBtn();
+    }
+
+    function updateAudioBtn() {
+      const icon = document.getElementById('audioIcon');
+      const text = document.getElementById('audioText');
+      if (isPlaying) { icon.textContent = '⏸'; text.textContent = 'Pausar'; } 
+      else { icon.textContent = '▶'; text.textContent = 'Tocar'; }
+    }
+
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('dragstart', e => e.preventDefault());
-
-    /* Bloqueio de atalhos de teclado de Print e DevTools */
     document.addEventListener('keydown', e => {
-      // Bloqueia a tecla PrintScreen
-      if (e.key === 'PrintScreen' || e.keyCode === 44) {
-        e.preventDefault();
-        return false;
-      }
-      // Bloqueia Ctrl+P (Imprimir)
-      if (e.ctrlKey && e.key === 'p') {
-        e.preventDefault();
-        return false;
-      }
-      // Bloqueia Ctrl+Shift+I / F12 (Inspecionar elemento)
-      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c'))) {
-        e.preventDefault();
-        return false;
-      }
-      // Bloqueia Ctrl+U (Ver código-fonte)
-      if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+      if (e.key === 'PrintScreen' || e.keyCode === 44 || (e.ctrlKey && e.key === 'p') || e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) || (e.ctrlKey && (e.key === 'u' || e.key === 'U'))) {
         e.preventDefault();
         return false;
       }
@@ -416,114 +518,47 @@
     const btnNext = document.getElementById('btnNext');
 
     function updateSlides() {
-      slides.forEach((slide, index) => {
-        if (index === currentSlide) {
-          slide.classList.add('active');
-        } else {
-          slide.classList.remove('active');
-        }
-      });
-
-      steps.forEach((step, index) => {
-        if (index <= currentSlide) {
-          step.classList.add('active');
-        } else {
-          step.classList.remove('active');
-        }
-      });
-
+      slides.forEach((slide, index) => { slide.classList.toggle('active', index === currentSlide); });
+      steps.forEach((step, index) => { step.classList.toggle('active', index <= currentSlide); });
       btnPrev.disabled = currentSlide === 0;
-      if (currentSlide === slides.length - 1) {
-        btnNext.innerHTML = 'Reiniciar 🔄';
-      } else {
-        btnNext.innerHTML = 'Avançar →';
-      }
+      btnNext.innerHTML = (currentSlide === slides.length - 1) ? 'Reiniciar 🔄' : 'Avançar →';
     }
 
-    function nextSlide() {
-      if (currentSlide < slides.length - 1) {
-        currentSlide++;
-      } else {
-        currentSlide = 0;
-      }
-      updateSlides();
-    }
-
-    function prevSlide() {
-      if (currentSlide > 0) {
-        currentSlide--;
-        updateSlides();
-      }
-    }
-
-    function goToSlide(index) {
-      currentSlide = index;
-      updateSlides();
-    }
+    function nextSlide() { currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0; updateSlides(); }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlides(); } }
+    function goToSlide(index) { currentSlide = index; updateSlides(); }
 
     let touchStartX = 0;
-    let touchEndX = 0;
-
-    document.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
+    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
     document.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
+      let diff = e.changedTouches[0].screenX - touchStartX;
+      if (diff < -40) nextSlide();
+      if (diff > 40) prevSlide();
     });
-
-    function handleSwipe() {
-      if (touchEndX < touchStartX - 40) {
-        nextSlide();
-      }
-      if (touchEndX > touchStartX + 40) {
-        prevSlide();
-      }
-    }
 
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    const stars = [];
-    for (let i = 0; i < 80; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.8 + 0.5,
-        color: ['#1e40af', '#38bdf8', '#60a5fa', '#ffffff', '#93c5fd'][Math.floor(Math.random() * 5)],
-        alpha: Math.random(),
-        speed: Math.random() * 0.015 + 0.005
-      });
-    }
+    const stars = Array.from({ length: 80 }, () => ({
+      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+      radius: Math.random() * 1.8 + 0.5,
+      color: ['#1e40af', '#38bdf8', '#60a5fa', '#ffffff', '#93c5fd'][Math.floor(Math.random() * 5)],
+      alpha: Math.random(), speed: Math.random() * 0.015 + 0.005
+    }));
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
       stars.forEach(star => {
-        star.alpha += star.speed;
-        if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
-        
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = star.color;
-        ctx.globalAlpha = Math.abs(star.alpha);
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = star.color;
-        ctx.fill();
+        star.alpha += star.speed; if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+        ctx.beginPath(); ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = star.color; ctx.globalAlpha = Math.abs(star.alpha);
+        ctx.shadowBlur = 8; ctx.shadowColor = star.color; ctx.fill();
       });
-
       requestAnimationFrame(animate);
     }
     animate();
-
     updateSlides();
   </script>
 </body>
