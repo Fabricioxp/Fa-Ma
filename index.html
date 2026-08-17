@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Nossa História Inesquecível ✨</title>
+  
+  <!-- Fontes Google -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <style>
     * {
       box-sizing: border-box;
@@ -44,7 +47,115 @@
       pointer-events: none;
     }
 
-    /* Container Principal */
+    /* TELA DE LOGIN */
+    #login-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #login-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .login-card {
+      background: rgba(10, 25, 47, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 24px;
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(15, 23, 42, 0.5);
+      text-align: center;
+    }
+
+    .login-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+
+    .login-subtitle {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(15, 23, 42, 0.6);
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      border-radius: 30px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-login:active {
+      transform: scale(0.97);
+    }
+
+    .error-msg {
+      color: #f43f5e;
+      font-size: 0.8rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* CONTAINER PRINCIPAL DA HISTÓRIA */
     .app-container {
       position: relative;
       z-index: 10;
@@ -54,6 +165,14 @@
       flex-direction: column;
       justify-content: space-between;
       padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px) 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease;
+    }
+
+    .app-container.visible {
+      opacity: 1;
+      visibility: visible;
     }
 
     /* Barras de Progresso no Topo */
@@ -145,7 +264,7 @@
       font-weight: 300;
     }
 
-    /* SLIDE FINAL COM FOTO TOTALMENTE PREENCHIDA */
+    /* Slide Final */
     .slide-final-container {
       position: relative;
       width: 100%;
@@ -256,6 +375,68 @@
     .touch-left { left: 0; }
     .touch-right { right: 0; }
   </style>
+
+  <!-- Módulos Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-EXAMPLE_KEY_REPLACE_ME",
+      authDomain: "nosso-amor-app.firebaseapp.com",
+      projectId: "nosso-amor-app",
+      storageBucket: "nosso-amor-app.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef123456"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Registra o login no Firestore
+    async function logAccess(username) {
+      try {
+        await addDoc(collection(db, "access_history"), {
+          user: username,
+          timestamp: serverTimestamp(),
+          userAgent: navigator.userAgent
+        });
+      } catch (e) {
+        console.error("Erro ao registrar acesso no Firestore: ", e);
+      }
+    }
+
+    // Gerenciamento de Autenticação
+    window.handleLogin = async function() {
+      const userField = document.getElementById('username').value.trim();
+      const passField = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('error-msg');
+
+      // Exemplo de validação simples (pode ser ajustada)
+      if (userField.toLowerCase() === "amor" && passField === "1234") {
+        sessionStorage.setItem('authenticated', 'true');
+        sessionStorage.setItem('user', userField);
+        
+        await logAccess(userField);
+        showApp();
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    };
+
+    function showApp() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-container').classList.add('visible');
+    }
+
+    // Checa sessão existente ao carregar
+    window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('authenticated') === 'true') {
+        showApp();
+      }
+    });
+  </script>
 </head>
 <body>
 
@@ -263,7 +444,29 @@
   <canvas id="canvas-bg"></canvas>
   <div class="cosmic-overlay"></div>
 
-  <div class="app-container">
+  <!-- Tela de Login -->
+  <div id="login-screen">
+    <div class="login-card">
+      <h1 class="login-title">Nosso Cantinho ✨</h1>
+      <p class="login-subtitle">Digite suas credenciais para acessar nossa história</p>
+      
+      <div class="input-group">
+        <label for="username">Usuário</label>
+        <input type="text" id="username" placeholder="Digite seu usuário">
+      </div>
+      
+      <div class="input-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="Digite sua senha">
+      </div>
+      
+      <button class="btn-login" onclick="handleLogin()">Entrar</button>
+      <p id="error-msg" class="error-msg">Usuário ou senha incorretos!</p>
+    </div>
+  </div>
+
+  <!-- App da História (Slides) -->
+  <div class="app-container" id="app-container">
 
     <!-- Indicadores no Topo -->
     <div class="progress-bar-container">
@@ -327,7 +530,7 @@
         </div>
       </div>
 
-      <!-- SLIDE FINAL -->
+      <!-- Slide 6 (Final) -->
       <div class="slide">
         <div class="slide-final-container">
           <div class="photo-frame">
@@ -352,14 +555,8 @@
 
   </div>
 
+  <!-- Lógica de Animação e Navegação -->
   <script>
-    // VERIFICAÇÃO DE LOGIN
-    // Verifica se existe a permissão salva no navegador
-    if (localStorage.getItem('userLogado') !== 'true') {
-      // Redireciona para o login caso não esteja logado
-      window.location.href = "https://fabricioxp.github.io/nosso-canto/";
-    }
-
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const steps = document.querySelectorAll('.progress-step');
@@ -412,6 +609,7 @@
       updateSlides();
     }
 
+    // Suporte a Gestos Swiping
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -433,6 +631,7 @@
       }
     }
 
+    // Fundo Estrelado (Canvas)
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
 
