@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>❤️🥰 ✨</title>
-  
-  <!-- Fontes Google -->
+  <title>Nossa História Inesquecível ✨</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
   <style>
     * {
       box-sizing: border-box;
@@ -47,108 +44,7 @@
       pointer-events: none;
     }
 
-    /* TELA DE LOGIN */
-    #login-screen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-
-    #login-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .login-card {
-      background: rgba(10, 25, 47, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 24px;
-      padding: 32px 24px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(15, 23, 42, 0.5);
-      text-align: center;
-    }
-
-    .login-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #38bdf8;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
-    }
-
-    .input-group {
-      margin-bottom: 16px;
-      text-align: left;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 0.8rem;
-      color: #cbd5e1;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      background: rgba(15, 23, 42, 0.6);
-      color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
-      transition: all 0.3s ease;
-    }
-
-    .input-group input:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 13px;
-      border-radius: 30px;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-      color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
-    }
-
-    .btn-login:active {
-      transform: scale(0.97);
-    }
-
-    .error-msg {
-      color: #f43f5e;
-      font-size: 0.8rem;
-      margin-top: 12px;
-      display: none;
-    }
-
-    /* CONTAINER PRINCIPAL DA HISTÓRIA */
+    /* Container Principal */
     .app-container {
       position: relative;
       z-index: 10;
@@ -158,14 +54,6 @@
       flex-direction: column;
       justify-content: space-between;
       padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px) 16px;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease;
-    }
-
-    .app-container.visible {
-      opacity: 1;
-      visibility: visible;
     }
 
     /* Barras de Progresso no Topo */
@@ -257,7 +145,7 @@
       font-weight: 300;
     }
 
-    /* Slide Final */
+    /* SLIDE FINAL COM FOTO TOTALMENTE PREENCHIDA */
     .slide-final-container {
       position: relative;
       width: 100%;
@@ -285,10 +173,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: top center;
+      object-position: top center; /* Garante que o topo e os rostos fiquem bem expostos */
       display: block;
     }
 
+    /* Degradê sutil concentrado apenas no pé do card para não atrapalhar o rosto */
     .photo-gradient-overlay {
       position: absolute;
       bottom: 0;
@@ -375,28 +264,7 @@
   <canvas id="canvas-bg"></canvas>
   <div class="cosmic-overlay"></div>
 
-  <!-- Tela de Login -->
-  <div id="login-screen">
-    <div class="login-card">
-      <h1 class="login-title">Login</h1>
-      
-      <div class="input-group">
-        <label for="username">Usuário</label>
-        <input type="text" id="username" placeholder="Digite seu usuário">
-      </div>
-      
-      <div class="input-group">
-        <label for="password">Senha</label>
-        <input type="password" id="password" placeholder="Digite sua senha">
-      </div>
-      
-      <button class="btn-login" onclick="handleLogin()">Entrar</button>
-      <p id="error-msg" class="error-msg">Usuário ou senha incorretos!</p>
-    </div>
-  </div>
-
-  <!-- App da História (Slides) -->
-  <div class="app-container" id="app-container">
+  <div class="app-container">
 
     <!-- Indicadores no Topo -->
     <div class="progress-bar-container">
@@ -460,7 +328,7 @@
         </div>
       </div>
 
-      <!-- Slide 6 (Final) -->
+      <!-- SLIDE FINAL -->
       <div class="slide">
         <div class="slide-final-container">
           <div class="photo-frame">
@@ -485,48 +353,7 @@
 
   </div>
 
-  <!-- Lógica do Login e Aplicação -->
   <script>
-    function showApp() {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('app-container').classList.add('visible');
-    }
-
-    function handleLogin() {
-      const userRaw = document.getElementById('username').value.trim();
-      const passRaw = document.getElementById('password').value.trim();
-      const errorMsg = document.getElementById('error-msg');
-
-      const userLower = userRaw.toLowerCase();
-      
-      // Validação: Usuário "maria" ou "fabricio" (maiúsculo/minúsculo) e Senha "winchester" (minúsculo)
-      const isValidUser = userLower === "maria" || userLower === "fabricio";
-      const isValidPassword = passRaw === "winchester";
-
-      if (isValidUser && isValidPassword) {
-        errorMsg.style.display = 'none';
-        sessionStorage.setItem('authenticated', 'true');
-        showApp();
-      } else {
-        errorMsg.style.display = 'block';
-      }
-    }
-
-    // Suporte para entrar pressionando a tecla "Enter" no campo de senha
-    document.getElementById('password').addEventListener('keyup', function(event) {
-      if (event.key === 'Enter') {
-        handleLogin();
-      }
-    });
-
-    // Mantém o acesso caso a página seja recarregada
-    window.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem('authenticated') === 'true') {
-        showApp();
-      }
-    });
-
-    // Lógica dos Slides
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const steps = document.querySelectorAll('.progress-step');
@@ -579,7 +406,6 @@
       updateSlides();
     }
 
-    // Gestos em telas sensíveis ao toque (Swiping)
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -601,7 +427,6 @@
       }
     }
 
-    // Fundo Estrelado Animado
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
 
